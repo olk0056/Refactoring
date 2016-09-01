@@ -1,4 +1,4 @@
-from scraping import *
+from Scraping import *
 import re
 from matplotlib import pyplot as plt
 
