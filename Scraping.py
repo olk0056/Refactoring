@@ -17,10 +17,13 @@ class URL(object):
 
 
 class Webscraping(object):
-
+    '''
+    edited product_name to try using string formatter for duplicated code
+    '''
     def product_name(self):
         product_name_results = []
-        for product_name in soup.find_all("a", {"class": "blue_link fn url"}):
+        name = ("string1", {"string2": "string3"}).format(string1="a", string2="class", string3="blue_link fn url")
+        for product_name in soup.find_all("string1", {"string2": "string3"}).format(name):
             try:
                 product_name_results.append(product_name.text)
             except IndexError:
