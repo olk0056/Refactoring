@@ -5,23 +5,6 @@ from matplotlib import pyplot as plt
 
 class Data_Methods(Webscraping):
 
-    def products_table(webscraping):
-            fig, axs = plt.subplots(2, 1)
-            clust_data = (webscraping.product_name(),
-                          webscraping.isbn(),
-                          webscraping.publishing_data(),
-                          webscraping.RRP(),
-                          webscraping.sale_prices(),
-                          webscraping.saving_total(),
-                          webscraping.photo_link())
-            collabel = ("Product Name", "ISBN", "Publishing Date", "RRP (NZ$)",
-                        "Sale Price (NZ$)", "Savings (%)")
-            axs[0].axis('tight')
-            axs[0].axis('off')
-            the_table = axs[0].table(cellText=clust_data,
-                                     colLabels=collabel, loc='center')
-            plt.show()
-
     def price_comparison(webScraping):
             x = []
             count = 0
