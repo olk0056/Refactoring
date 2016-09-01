@@ -19,7 +19,22 @@ class Scraping_Test(unittest.TestCase):
 
 
     def test_name(self):
-        '''
-        Testing code of string formatter for validity, hardcoded as url is usually set through CMD before running
-        '''
         self.assertTrue(Webscraping.product_name(self) == [])
+
+    def test_isbn(self):
+        self.assertTrue(Webscraping.isbn(self) == [])
+
+    def test_date(self):
+        self.assertTrue(Webscraping.publishing_date(self) == [])
+
+    def test_rrp(self):
+        self.assertTrue(Webscraping.RRP(self) == [])
+
+    def test_sale(self):
+        self.assertTrue(Webscraping.sale_prices(self) == [])
+
+    def test_savings(self):
+        self.assertTrue(Webscraping.saving_total(self) == [])
+
+    def test_photo(self):
+        self.assertTrue(Webscraping.photo_link(self) == [])
