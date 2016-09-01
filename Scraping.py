@@ -3,9 +3,8 @@ import requests
 import sys
 
 
-class URL(object):
-
-    def go(self):
+'''class URL(object):
+     def go(self):
         global soup
         chars = set('fishpond')
         r = requests.get(input("Please enter a Fishpond URL: "))
@@ -13,15 +12,23 @@ class URL(object):
             soup = BeautifulSoup(r.content, "lxml")
         else:
             print('Please enter a valid Fishpond URL')
-            sys.exit(0)
+            sys.exit(0)'''
+
 
 
 class Webscraping(object):
 
+    global soup
+    global scrapingList
+    r = requests.get("http://www.fishpond.co.nz/Books/Fiction_Literature")
+    soup = BeautifulSoup(r.content, "lxml")
+
+    scrapingList = ['("string1", {"string2": "string3"}).format(string1="a", string2="class", string3="blue_link fn url")']
+
     def product_name(self):
         product_name_results = []
-        name = '("string1", {"string2": "string3"}).format(string1="a", string2="class", string3="blue_link fn url")'
-        for product_name in soup.find_all(name):
+
+        for product_name in soup.find_all(scrapingList[0]):
             try:
                 product_name_results.append(product_name.text)
             except IndexError:
