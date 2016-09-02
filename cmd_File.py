@@ -122,8 +122,11 @@ class HelpCMD(cmd.Cmd, Webscraping):
         """
         Pie chart showing a breakdown publishing dates by month
         """
-        Data_Methods.setter(self)
-        Data_Methods.print_publisher(self, setter)
+        try:
+            Data_Methods.setter(self)
+            Data_Methods.print_publisher(self, setter)
+        except NameError:
+            print("Please set a url")
 
     def do_quit(self, webscraping):
         """
