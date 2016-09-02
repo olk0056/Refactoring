@@ -1,9 +1,8 @@
 import cmd
-from scraping import *
+from Scraping import *
 import pickle
 import os
-from Data_Methods import Data_Methods
-
+from Data_Method import *
 
 class HelpCMD(cmd.Cmd, Webscraping):
 
@@ -21,7 +20,7 @@ class HelpCMD(cmd.Cmd, Webscraping):
         Set URL of Fishpond page to scrap information from
         :return: Input
          """
-        URL.go(self)
+        '''URL.go(self)'''
 
     def do_printall(self, webscraping):
         """
@@ -33,7 +32,7 @@ class HelpCMD(cmd.Cmd, Webscraping):
             print('Publishing Date: ', Webscraping.publishing_date(self))
             print('RRP ($): ', Webscraping.RRP(self))
             print('Sale Price ($): ', Webscraping.sale_prices(self))
-            print('Savings : ', Webscraping.saving_total(self))
+            print('Savings (%): ', Webscraping.saving_total(self))
             print('Product Photo: ', Webscraping.photo_link(self))
         except NameError:
             print("Please set a url")
@@ -106,7 +105,7 @@ class HelpCMD(cmd.Cmd, Webscraping):
         Graphical comparison of RRP and Sale Price for all products
         """
         try:
-            Data_Methods.price_comparison(self)
+            Data_Methods.plot_scatter_graph(self)
         except NameError:
             print("Please set a url")
 
@@ -119,14 +118,12 @@ class HelpCMD(cmd.Cmd, Webscraping):
         except NameError:
             print("Please set a url")
 
-    def do_publishingdata(self, webscraping):
+    def do_publishingdata(self, setter):
         """
         Pie chart showing a breakdown publishing dates by month
         """
-        try:
-            Data_Methods.publishing_data(self)
-        except NameError:
-            print("Please set a url")
+        Data_Methods.setter(self)
+        Data_Methods.print_publisher(self, setter)
 
     def do_quit(self, webscraping):
         """
