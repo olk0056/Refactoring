@@ -66,52 +66,42 @@ class Data_Methods(Webscraping):
         plt.axis('equal')
         plt.show()
 
-    def scatter_graph(webScraping):
-        x = []
-        count = 0
-        intlist = [float(x) for x in webScraping.RRP()]
-        while count < len(webScraping.RRP()):
-            count += 1
-            x.append(count)
-        plt.figure(num=None, figsize=(10, 10), dpi=80,
-                   facecolor='w', edgecolor='k')
-        y = [i for i in intlist]
-        plt.xlim(0, 22)
-        plt.plot(x, y, label='RRP')
-        plt.scatter(x, y)
-        plt.title('Price Comparison Chart')
-        plt.ylabel('Price ($)')
-        plt.xlabel('Number of products')
-        for i, j in zip(y, x):
-            plt.annotate(str(i), xy=(j, i), textcoords='data',
-                         horizontalalignment='left',
-                         verticalalignment='bottom')
+    def price_comparison(webScraping):
+            x = []
+            count = 0
+            x1 = []
+            count1 = 0
+            intlist = [float(x) for x in webScraping.RRP()]
+            salePriceInt = [float(x) for x in webScraping.sale_prices()]
+            while count < len(webScraping.RRP()):
+                count += 1
+                x.append(count)
 
-    def plot_graph(webScraping):
-        x1 = []
-        count1 = 0
-        salePriceInt = [float(x) for x in webScraping.sale_prices()]
-        while count1 < len(webScraping.sale_prices()):
-            count1 += 1
-            x1.append(count1)
-        plt.figure(num=None, figsize=(10, 10), dpi=80,
-                   facecolor='w', edgecolor='k')
-        y1 = [i for i in salePriceInt]
-        plt.xlim(0, 22)
-        plt.plot(x1, y1, label='Sale Price', color='r')
-        plt.scatter(x1, y1, color='r')
-        for i, j in zip(y1, x1):
-            plt.annotate(str(i), xy=(j, i), textcoords='data',
-                         horizontalalignment='left',
-                         verticalalignment='bottom')
-
-
-
-    def plot_scatter_graph(webScraping):
-        Data_Methods.plot_graph(webScraping)
-        Data_Methods.scatter_graph(webScraping)
-        plt.legend()
-        plt.show()
+            while count1 < len(webScraping.sale_prices()):
+                count1 += 1
+                x1.append(count1)
+            plt.figure(num=None, figsize=(10, 10), dpi=80,
+                       facecolor='w', edgecolor='k')
+            y = [i for i in intlist]
+            y1 = [i for i in salePriceInt]
+            plt.xlim(0, 22)
+            plt.plot(x, y, label='RRP')
+            plt.plot(x1, y1, label='Sale Price', color='r')
+            plt.scatter(x, y)
+            plt.scatter(x1, y1,  color='r')
+            plt.title('Price Comparison Chart')
+            plt.ylabel('Price ($)')
+            plt.xlabel('Number of products')
+            for i, j in zip(y1, x1):
+                plt.annotate(str(i), xy=(j, i), textcoords='data',
+                             horizontalalignment='left',
+                             verticalalignment='bottom')
+            for i, j in zip(y, x):
+                plt.annotate(str(i), xy=(j, i), textcoords='data',
+                             horizontalalignment='left',
+                             verticalalignment='bottom')
+            plt.legend()
+            plt.show()
 
     def total_savings_data(webScraping):
             count = 0
