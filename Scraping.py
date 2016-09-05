@@ -2,10 +2,10 @@ from bs4 import BeautifulSoup
 import requests
 import sys
 
-
+'''
 class URL(object):
 
-    def go(self):
+  def go(self):
         global soup
         chars = set('fishpond')
         r = requests.get(input("Please enter a Fishpond URL: "))
@@ -13,10 +13,13 @@ class URL(object):
             soup = BeautifulSoup(r.content, "lxml")
         else:
             print('Please enter a valid Fishpond URL')
-            sys.exit(0)
-
+            sys.exit(0)'''
 
 class Webscraping(object):
+    global soup
+    r = requests.get("http://www.fishpond.co.nz/Books/Fiction_Literature")
+    soup = BeautifulSoup(r.content, "lxml")
+
 
     def product_name(self):
         product_name_results = []
@@ -83,3 +86,27 @@ class Webscraping(object):
             except IndexError:
                 print("No photo links found")
         return photo_link_results
+
+    def temp(span, classes, specific, appends):
+        result = []
+        for x in soup.find_all(span, {classes: specific}):
+            try:
+                result.append(x[appends])
+            except IndexError:
+                print("No products found found")
+        return result
+
+
+    def temp2(span, classes, specific, appends):
+        result = []
+        for x in soup.find_all(span, {classes: specific}):
+            try:
+                result.append(x.appends)
+            except IndexError:
+                print("No products found found")
+        return result
+
+
+print(Webscraping.temp2("a", "class", "blue_link fn url", "text"))
+print(Webscraping.temp("input", "name", "barcode", "value"))
+print(Webscraping.temp2('s', "", "", "text[1:]"))
