@@ -101,12 +101,29 @@ class Webscraping(object):
         result = []
         for x in soup.find_all(span, {classes: specific}):
             try:
-                result.append(x.appends)
+                result.append(x.text)
             except IndexError:
                 print("No products found found")
         return result
 
 
-print(Webscraping.temp2("a", "class", "blue_link fn url", "text"))
-print(Webscraping.temp("input", "name", "barcode", "value"))
-print(Webscraping.temp2('s', "", "", "text[1:]"))
+def product_name(self):
+    product_name_results = []
+    for product_name in soup.find_all("a", {"class": "blue_link fn url"}):
+        try:
+            product_name_results.append(product_name.text)
+        except IndexError:
+            print("No products found found")
+    return product_name_results
+
+print("Produce name: " , Webscraping.temp2("a", "class", "blue_link fn url", "")) #product_name
+print("Sale Price: " , Webscraping.temp2('span', "class", "productSpecialPrice", "text[1:]")) #saleprice
+print("Publishing Date: " , Webscraping.temp2('div', "class", "productSearch-metainfo", "text.split(',', 1)[-1]")) #publishingdate
+print("RRP: " , Webscraping.temp2('s', "", "", "text[1:]")) #rrp
+print("Savings: " , Webscraping.temp2('span', "class", "you_save", "text.partition('(')[-1].rpartition('%')[0]")) #savings
+print("Photo Link: " , Webscraping.temp("img", "class", "photo", "src")) #photo
+print("ISBN: " ,Webscraping.temp("input", "name", "barcode", "value")) #isbn
+
+'''
+Have everything printing fully using the two templates, however any text editing/splitting is not yet functional
+'''
