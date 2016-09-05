@@ -1,15 +1,17 @@
 import unittest
 from Data_Method import *
+from Scraping import *
 from matplotlib import pyplot as plt
 from matplotlib.testing.decorators import cleanup
 
 class Scraping_Test(unittest.TestCase):
 
-    def test_name(self):
+    def test_result_array(self):
         '''
-        Testing code of string formatter for validity, hardcoded as url is usually set through CMD before running
+        Testing code to check that individual array elements are not None
         '''
-        self.assertTrue(Webscraping.product_name(self) != [])
+        self.assertIsNotNone(Webscraping.temp2("a", "class", "blue_link fn url", "text")[1])
+        self.assertIsNotNone(Webscraping.temp("input", "name", "barcode", "value")[1])
 
 @cleanup
 class Data_Test(unittest.TestCase):
