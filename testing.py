@@ -6,13 +6,18 @@ from matplotlib.testing.decorators import cleanup
 
 class Scraping_Test(unittest.TestCase):
 
-    def test_result_array(self):
+    def test_result_array1(self):
         '''
         Testing code to check that individual array elements are not None
         '''
-        self.assertIsNotNone(Webscraping.temp2("a", "class", "blue_link fn url", "text")[1])
         self.assertIsNotNone(Webscraping.temp("input", "name", "barcode", "value")[1])
 
+
+    def test_result_array2(self):
+        '''
+        Testing code two to check that individual array elements are not None
+        '''
+        self.assertIsNotNone(Webscraping.temp2("a", "class", "blue_link fn url", "text")[1])
 @cleanup
 class Data_Test(unittest.TestCase):
     '''
