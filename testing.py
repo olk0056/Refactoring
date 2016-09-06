@@ -18,6 +18,17 @@ class Scraping_Test(unittest.TestCase):
         Testing code two to check that individual array elements are not None
         '''
         self.assertIsNotNone(Webscraping.temp2("a", "class", "blue_link fn url", "text")[1])
+
+    def test_array_editing(self):
+        '''
+        Test to see if I can edit the arrays test layout and successfully print the desired result
+        '''
+        results = Webscraping.temp2('div', "class", "productSearch-metainfo",
+                                    "text.split(',', 1)[-1]")  # publishingDate
+        myList = [i.split(',', 1)[-1].strip() for i in results]
+        self.assertNotIn('\n', myList[0])
+
+
 @cleanup
 class Data_Test(unittest.TestCase):
     '''
