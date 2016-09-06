@@ -20,73 +20,6 @@ class Webscraping(object):
     r = requests.get("http://www.fishpond.co.nz/Books/Fiction_Literature")
     soup = BeautifulSoup(r.content, "lxml")
 
-
-    def product_name(self):
-        product_name_results = []
-        for product_name in soup.find_all("a", {"class": "blue_link fn url"}):
-            try:
-                product_name_results.append(product_name.text)
-            except IndexError:
-                print("No products found found")
-        return product_name_results
-
-    def isbn(self):
-        isbn_results = []
-        for isbn in soup.find_all("input", {"name": "barcode"}):
-            try:
-                isbn_results.append(isbn['value'])
-            except IndexError:
-                print("No ISBN valid found")
-        return isbn_results
-
-    def publishing_date(self):
-        publishing_date_results = []
-        for dates in soup.find_all("div", {"class": "productSearch-metainfo"}):
-            try:
-                publishing_date_results.append(dates.text.split(',', 1)[-1])
-            except IndexError:
-                print("No publishing dates found")
-        return publishing_date_results
-
-    def RRP(self):
-        rrp_results = []
-        for rrp in soup.find_all('s'):
-            try:
-                rrp_results.append(rrp.text[1:])
-            except IndexError:
-                print("No RRP found")
-        return rrp_results
-
-    def sale_prices(self):
-        sale_price_results = []
-        for salePrice in soup.find_all("span",
-                                       {"class": "productSpecialPrice"}):
-            try:
-                sale_price_results.append(salePrice.text[1:])
-            except IndexError:
-                print("No sale prices found")
-        return sale_price_results
-
-    def saving_total(self):
-        savings_results = []
-        for savings in soup.find_all("span",
-                                     {"class": "you_save"}):
-            try:
-                savings_results.append(savings.text.partition
-                                       ('(')[-1].rpartition('%')[0])
-            except IndexError:
-                print("No savings found")
-        return savings_results
-
-    def photo_link(self):
-        photo_link_results = []
-        for photoLink in soup.find_all("img", {"class": "photo"}):
-            try:
-                photo_link_results.append(photoLink['src'])
-            except IndexError:
-                print("No photo links found")
-        return photo_link_results
-
     def temp(span, classes, specific, appends):
         result = []
         for x in soup.find_all(span, {classes: specific}):
@@ -97,7 +30,7 @@ class Webscraping(object):
         return result
 
 
-    def temp2(span, classes, specific, appends):
+    def temp2(span, classes, specific):
         result = []
         for x in soup.find_all(span, {classes: specific}):
             try:
@@ -106,24 +39,31 @@ class Webscraping(object):
                 print("No products found found")
         return result
 
+    def product_name(self):
+        print("Produce name: ", Webscraping.temp2("a", "class", "blue_link fn url"))
 
-def product_name(self):
-    product_name_results = []
-    for product_name in soup.find_all("a", {"class": "blue_link fn url"}):
-        try:
-            product_name_results.append(product_name.text)
-        except IndexError:
-            print("No products found found")
-    return product_name_results
+    def isbn(self):
+        print("ISBN: ", Webscraping.temp("input", "name", "barcode", "value"))
 
-print("Produce name: " , Webscraping.temp2("a", "class", "blue_link fn url", "")) #product_name
-print("Sale Price: " , Webscraping.temp2('span', "class", "productSpecialPrice", "text[1:]")) #saleprice
-print("Publishing Date: " , Webscraping.temp2('div', "class", "productSearch-metainfo", "text.split(',', 1)[-1]")) #publishingdate
-print("RRP: " , Webscraping.temp2('s', "", "", "text[1:]")) #rrp
-print("Savings: " , Webscraping.temp2('span', "class", "you_save", "text.partition('(')[-1].rpartition('%')[0]")) #savings
-print("Photo Link: " , Webscraping.temp("img", "class", "photo", "src")) #photo
-print("ISBN: " ,Webscraping.temp("input", "name", "barcode", "value")) #isbn
+    def publishing_date(self):
+        results = Webscraping.temp2('div', "class", "productSearch-metainfo")
+        myList = [i.split(',', 1)[-1].strip() for i in results]
+        print("Publishing Date: ", myList)
 
-'''
-Have everything printing fully using the two templates, however any text editing/splitting is not yet functional
-'''
+    def RRP(self):
+        results = Webscraping.temp2("s", "", "")
+        myList = [i[1:] for i in results]
+        print("RRP ($): ", myList)
+
+    def sale_prices(self):
+        results = Webscraping.temp2("span", "class", "productSpecialPrice")
+        myList = [i[1:] for i in results]
+        print("Sale Price ($): ", myList)
+
+    def saving_total(self):
+        results = Webscraping.temp2('span', "class", "you_save")  # savings
+        myList = [i.partition('(')[-1].rpartition('%')[0] for i in results]
+        print("Savings Total (%): ", myList)
+
+    def photo_link(self):
+        print("Photo Link: ", Webscraping.temp("img", "class", "photo", "src"))  # photo
