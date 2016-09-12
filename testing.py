@@ -4,7 +4,7 @@ from Scraping import *
 from matplotlib import pyplot as plt
 from matplotlib.testing.decorators import cleanup
 
-class Scraping_Test(unittest.TestCase):
+class Scraping_Test(unittest.TestCase, Webscraping):
 
     def test_result_array1(self):
         '''
@@ -27,17 +27,39 @@ class Scraping_Test(unittest.TestCase):
         myList = [i.split(',', 1)[-1].strip() for i in results]
         self.assertNotIn('\n', myList[0])
 
+    @cleanup
+    def test_create_printpublisher(self):
+        '''
+        Testing graph creation for publishing data to ensure graph is still created on refactoring
+        '''
+        plt.plot([1, 2, 3, 4])
+        plt.ylabel('some numbers')
+        fig = plt.show()
+        d = Data_Methods()
+        d.setter()
 
-@cleanup
-class Data_Test(unittest.TestCase):
-    '''
-    Testing graph creation for publishing data to ensure graph is still created on refactoring
-    '''
-    def test_create_figure(self):
-        fig = plt.figure()
+        self.assertEqual(Data_Methods.print_publisher(self, d), fig)
 
-        self.assertEqual(Data_Methods.publishing_data() == fig)
+    @cleanup
+    def test_create_pricecomparison(self):
+        '''
+        Testing graph creation for publishing data to ensure graph is still created on refactoring
+        '''
+        plt.plot([1, 2, 3, 4])
+        plt.ylabel('some numbers')
+        fig = plt.show()
 
+        self.assertEqual(Data_Methods.price_comparison(self), fig)
+
+    @cleanup
+    def test_create_savingsdata(self):
+        '''
+        Testing graph creation for publishing data to ensure graph is still created on refactoring
+        '''
+        plt.plot([1, 2, 3, 4])
+        plt.ylabel('some numbers')
+        fig = plt.show()
+        self.assertEqual(Data_Methods.total_savings_data(self), fig)
 
 if __name__ == '__main__':
     unittest.main()
