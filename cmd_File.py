@@ -105,7 +105,7 @@ class HelpCMD(cmd.Cmd, Webscraping):
         Graphical comparison of RRP and Sale Price for all products
         """
         try:
-            Data_Methods.plot_scatter_graph(self)
+            Data_Methods.price_comparison(self)
         except NameError:
             print("Please set a url")
 
