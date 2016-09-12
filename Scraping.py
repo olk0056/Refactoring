@@ -40,30 +40,30 @@ class Webscraping(object):
         return result
 
     def product_name(self):
-        print("Produce name: ", Webscraping.temp2("a", "class", "blue_link fn url"))
+        return(Webscraping.temp2("a", "class", "blue_link fn url"))
 
     def isbn(self):
-        print("ISBN: ", Webscraping.temp("input", "name", "barcode", "value"))
+        return(Webscraping.temp("input", "name", "barcode", "value"))
 
     def publishing_date(self):
         results = Webscraping.temp2('div', "class", "productSearch-metainfo")
         myList = [i.split(',', 1)[-1].strip() for i in results]
-        print("Publishing Date: ", myList)
+        return(myList)
 
     def RRP(self):
         results = Webscraping.temp2("s", "", "")
         myList = [i[1:] for i in results]
-        print("RRP ($): ", myList)
+        return(myList)
 
     def sale_prices(self):
         results = Webscraping.temp2("span", "class", "productSpecialPrice")
         myList = [i[1:] for i in results]
-        print("Sale Price ($): ", myList)
+        return(myList)
 
     def saving_total(self):
         results = Webscraping.temp2('span', "class", "you_save")  # savings
         myList = [i.partition('(')[-1].rpartition('%')[0] for i in results]
-        print("Savings Total (%): ", myList)
+        return(myList)
 
     def photo_link(self):
-        print("Photo Link: ", Webscraping.temp("img", "class", "photo", "src"))  # photo
+        return(Webscraping.temp("img", "class", "photo", "src"))  # photo
