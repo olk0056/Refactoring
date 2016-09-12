@@ -2,7 +2,7 @@ from Scraping import *
 import re
 from matplotlib import pyplot as plt
 
-class Data_Methods(Webscraping):
+class Data_Methods(object):
 
     def setter(self):
        global January, February, March, April, May, June, July, August, September, October, November, December
@@ -19,10 +19,12 @@ class Data_Methods(Webscraping):
        November = []
        December = []
 
+       global result
        result = re.findall(r"(?i)\b[a-z]+\b", str
                  (Webscraping.publishing_date(self)))
 
-       for strings in result:
+    def month_setter(self):
+        for strings in result:
             if strings == "January":
                 January.append(1)
             elif strings == "February":
@@ -47,6 +49,7 @@ class Data_Methods(Webscraping):
                 November.append(1)
             elif strings == "December":
                 December.append(1)
+
 
     def print_publisher(webScraping, setter):
         # Data to plot
