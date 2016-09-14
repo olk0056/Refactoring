@@ -1,8 +1,8 @@
 import cmd
-from Scraping import *
 import pickle
 import os
 from Data_Method import *
+from datetime import datetime
 
 class HelpCMD(cmd.Cmd, Webscraping):
 
@@ -12,8 +12,16 @@ class HelpCMD(cmd.Cmd, Webscraping):
 
     def __init__(self):
         cmd.Cmd.__init__(self)
-        self.prompt = ">>>"
-        self.cmdloop()
+        args = sys.argv[1:]
+        if args:
+            for arg in args:
+                if arg == 'Time':
+                    print("Starting at", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                    self.prompt = ">>>"
+                    self.cmdloop()
+        else:
+            self.prompt = ">>>"
+            self.cmdloop()
 
     def do_seturl(self, url):
         """
@@ -105,7 +113,7 @@ class HelpCMD(cmd.Cmd, Webscraping):
         Graphical comparison of RRP and Sale Price for all products
         """
         try:
-            Data_Methods.price_comparison(self)
+            DataMethods.price_comparison(self)
         except NameError:
             print("Please set a url")
 
@@ -114,17 +122,17 @@ class HelpCMD(cmd.Cmd, Webscraping):
         Graph showing the savings (%) of all the products scraped
         """
         try:
-            Data_Methods.total_savings_data(self)
+            DataMethods.total_savings_data(self)
         except NameError:
             print("Please set a url")
 
-    def do_publishingdata(self, setter):
+    def do_publishingdata(self, webscraping):
         """
         Pie chart showing a breakdown publishing dates by month
         """
         try:
-            Data_Methods.setter(self)
-            Data_Methods.print_publisher(self, setter)
+            DataMethods.setter(self, Webscraping)
+            DataMethods.print_publisher(self)
         except NameError:
             print("Please set a url")
 
