@@ -4,19 +4,20 @@ from Scraping import *
 from matplotlib import pyplot as plt
 from matplotlib.testing.decorators import cleanup
 
+
 class Scraping_Test(unittest.TestCase, Webscraping):
 
     def test_result_array1(self):
-        '''
+        """
         Testing code to check that individual array elements are not None
-        '''
+        """
+
         self.assertIsNotNone(Webscraping.temp("input", "name", "barcode", "value")[1])
 
-
     def test_result_array2(self):
-        '''
+        """
         Testing code two to check that individual array elements are not None
-        '''
+        """
         self.assertIsNotNone(Webscraping.temp2("a", "class", "blue_link fn url")[1])
 
     def test_array_editing(self):
@@ -29,37 +30,37 @@ class Scraping_Test(unittest.TestCase, Webscraping):
 
     @cleanup
     def test_create_printpublisher(self):
-        '''
+        """
         Testing graph creation for publishing data to ensure graph is still created on refactoring
-        '''
+        """
         plt.plot([1, 2, 3, 4])
         plt.ylabel('some numbers')
         fig = plt.show()
-        d = Data_Methods()
-        d.setter()
+        d = DataMethods()
+        d.setter(Webscraping)
 
-        self.assertEqual(Data_Methods.print_publisher(self, d), fig)
+        self.assertEqual(DataMethods.print_publisher(Webscraping), fig)
 
     @cleanup
     def test_create_pricecomparison(self):
-        '''
+        """
         Testing graph creation for publishing data to ensure graph is still created on refactoring
-        '''
+        """
         plt.plot([1, 2, 3, 4])
         plt.ylabel('some numbers')
         fig = plt.show()
 
-        self.assertEqual(Data_Methods.price_comparison(self), fig)
+        self.assertEqual(DataMethods.price_comparison(self), fig)
 
     @cleanup
     def test_create_savingsdata(self):
-        '''
+        """
         Testing graph creation for publishing data to ensure graph is still created on refactoring
-        '''
+        """
         plt.plot([1, 2, 3, 4])
         plt.ylabel('some numbers')
         fig = plt.show()
-        self.assertEqual(Data_Methods.total_savings_data(self), fig)
+        self.assertEqual(DataMethods.total_savings_data(self), fig)
 
 if __name__ == '__main__':
     unittest.main()
