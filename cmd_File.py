@@ -3,6 +3,8 @@ import pickle
 import os
 from Data_Method import *
 from datetime import datetime
+import scraping
+import graphing as graphs
 
 class HelpCMD(cmd.Cmd, Webscraping):
 
@@ -16,7 +18,8 @@ class HelpCMD(cmd.Cmd, Webscraping):
         if args:
             for arg in args:
                 if arg == 'Time':
-                    print("Starting at", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                    print("Starting at", datetime.now()
+                          .strftime('%Y-%m-%d %H:%M:%S'))
                     self.prompt = ">>>"
                     self.cmdloop()
         else:
@@ -28,20 +31,20 @@ class HelpCMD(cmd.Cmd, Webscraping):
         Set URL of Fishpond page to scrap information from
         :return: Input
          """
-        '''URL.go(self)'''
+        URL.go(self)
 
     def do_printall(self, webscraping):
         """
         List of all scraped data, as list
         """
         try:
-            print("Product name: ", Webscraping.product_name(self))
-            print("ISBN:  ", Webscraping.isbn(self))
-            print('Publishing Date: ', Webscraping.publishing_date(self))
-            print('RRP ($): ', Webscraping.RRP(self))
-            print('Sale Price ($): ', Webscraping.sale_prices(self))
-            print('Savings (%): ', Webscraping.saving_total(self))
-            print('Product Photo: ', Webscraping.photo_link(self))
+            self.do_product(webscraping)
+            self.do_isbn(webscraping)
+            self.do_publish(webscraping)
+            self.do_rrp(webscraping)
+            self.do_sale(webscraping)
+            self.do_savings(webscraping)
+            self.do_image(webscraping)
         except NameError:
             print("Please set a url")
 
@@ -50,7 +53,10 @@ class HelpCMD(cmd.Cmd, Webscraping):
         List of all scraped product names, as list
          """
         try:
-            print("Product name: ", Webscraping.product_name(self))
+            scraper = scraping.Director()
+            scraper.builder = scraping.product_name()
+            product = scraper.create2()
+            print("Product Name: ", product.temp2())
         except NameError:
             print("Please set a url")
 
@@ -59,7 +65,10 @@ class HelpCMD(cmd.Cmd, Webscraping):
         List of all scraped product ISBN's, as list
         """
         try:
-            print("ISBN:  ", Webscraping.isbn(self))
+            scraper = scraping.Director()
+            scraper.builder = scraping.isbn()
+            temp = scraper.create()
+            print("ISBN: ", temp.temp())
         except NameError:
             print("Please set a url")
 
@@ -68,7 +77,12 @@ class HelpCMD(cmd.Cmd, Webscraping):
         List of all scraped savings, as list
         """
         try:
-            print('Savings : ', Webscraping.saving_total(self))
+            scraper = scraping.Director()
+            scraper.builder = scraping.saving_total()
+            savings = scraper.create2()
+            results = savings.temp2()
+            myList = [i.partition('(')[-1].rpartition('%')[0] for i in results]
+            print('Savings : ', myList)
         except NameError:
             print("Please set a url")
 
@@ -77,7 +91,12 @@ class HelpCMD(cmd.Cmd, Webscraping):
         List of all scraped product's Publishing Date, as list
         """
         try:
-            print('Publishing Date: ', Webscraping.publishing_date(self))
+            scraper = scraping.Director()
+            scraper.builder = scraping.publishing_date()
+            publish = scraper.create2()
+            results = publish.temp2()
+            myList = [i.split(',', 1)[-1].strip() for i in results]
+            print('Publishing Date', myList)
         except NameError:
             print("Please set a url")
 
@@ -86,7 +105,12 @@ class HelpCMD(cmd.Cmd, Webscraping):
         List of all scraped product RRP, as list
         """
         try:
-            print('Normal Price ($): ', Webscraping.RRP(self))
+            scraper = scraping.Director()
+            scraper.builder = scraping.RRP()
+            rrp = scraper.create2()
+            results = rrp.temp2()
+            myList = [i[1:] for i in results]
+            print("Recommended retail price ($)", myList)
         except NameError:
             print("Please set a url")
 
@@ -95,7 +119,12 @@ class HelpCMD(cmd.Cmd, Webscraping):
         List of all scraped product's Sale Price, as list
         """
         try:
-            print('Sale Price ($): ', Webscraping.sale_prices(self))
+            scraper = scraping.Director()
+            scraper.builder = scraping.sale_prices()
+            sale = scraper.create2()
+            results = sale.temp2()
+            myList = [i[1:] for i in results]
+            print('Sale Price ($): ',myList)
         except NameError:
             print("Please set a url")
 
@@ -104,7 +133,10 @@ class HelpCMD(cmd.Cmd, Webscraping):
         List of all scraped product's relevant image, as url list
         """
         try:
-            print('Product Photo: ', Webscraping.photo_link(self))
+            scraper = scraping.Director()
+            scraper.builder = scraping.photo_link()
+            photo = scraper.create()
+            print('Product Photo: ', photo.temp())
         except NameError:
             print("Please set a url")
 
@@ -113,7 +145,8 @@ class HelpCMD(cmd.Cmd, Webscraping):
         Graphical comparison of RRP and Sale Price for all products
         """
         try:
-            DataMethods.price_comparison(self)
+            graphing = graphs.GrapherFactory()
+            graphing.get_graph("Price")
         except NameError:
             print("Please set a url")
 
@@ -122,7 +155,8 @@ class HelpCMD(cmd.Cmd, Webscraping):
         Graph showing the savings (%) of all the products scraped
         """
         try:
-            DataMethods.total_savings_data(self)
+            graphing = graphs.GrapherFactory()
+            graphing.get_graph("Savings")
         except NameError:
             print("Please set a url")
 
@@ -131,8 +165,8 @@ class HelpCMD(cmd.Cmd, Webscraping):
         Pie chart showing a breakdown publishing dates by month
         """
         try:
-            DataMethods.setter(self, Webscraping)
-            DataMethods.print_publisher(self)
+            graphing = graphs.GrapherFactory()
+            graphing.get_graph("Data")
         except NameError:
             print("Please set a url")
 
@@ -153,29 +187,27 @@ class HelpCMD(cmd.Cmd, Webscraping):
                     Sale Price, Savings, Photos, All
         """
         try:
-            results = Webscraping()
             save_path = input("What is the directory?: ")
             try:
                 name_of_file = input("What is the name of the file: ")
                 type = input("What data type do you want to save?: ")
                 if type == 'Product Name':
-                    save = results.product_name()
+                    save = self.do_product(webscraping)
                 elif type == 'ISBN':
-                    save = results.isbn()
+                    save = self.do_isbn(webscraping)
                 elif type == "Publish Date":
-                    save = results.publishing_date()
+                    save = self.do_publish(webscraping)
                 elif type == 'Normal Price':
-                    save = results.RRP()
+                    save = self.do_rrp(webscraping)
                 elif type == 'Sale Price':
-                    save = results.sale_prices()
+                    save =  self.do_sale(webscraping)
                 elif type == 'Savings':
-                    save = results.saving_total()
+                    save = self.do_savings(webscraping)
                 elif type == 'Photos':
-                    save = results.photo_link()
+                    save = self.do_image(webscraping)
                 elif type == "Save all":
-                    save = (results.product_name(), results.isbn(), results.RRP(),
-                            results.sale_prices(),
-                            results.saving_total(), results.photo_link())
+                    save = (self.do_product(webscraping), self.do_isbn(webscraping),self.do_publish(webscraping),
+                    self.do_rrp(webscraping), self.do_sale(webscraping), self.do_savings(webscraping), self.do_image(webscraping))
                 complete_name = os.path.join(save_path, name_of_file + ".txt")
                 file1 = open(complete_name, "wb")
                 pickle.dump(save, file1)
@@ -200,3 +232,4 @@ class HelpCMD(cmd.Cmd, Webscraping):
 
 if __name__ == '__main__':
     prompt = HelpCMD()
+
