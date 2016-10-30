@@ -11,7 +11,6 @@ class Scraping_Test(unittest.TestCase, Webscraping):
         """
         Testing code to check that individual array elements are not None
         """
-
         self.assertIsNotNone(Webscraping.temp("input", "name", "barcode", "value")[1])
 
     def test_result_array2(self):
